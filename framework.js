@@ -7,7 +7,7 @@ function Framework(){
     this.deltaTime = 1 / this.fps;
 
     // this.gravity = 9.8;
-    this.gravity = 0;
+    this.gravity = 1;
     this.actors = [];
 
     this.playerActor = null;
@@ -35,6 +35,15 @@ Framework.prototype.init = function() {
     this.actors.push(new ActorBase());
     this.actors.push(this.playerActor);
 
+    // mon
+    var monActor = new CircleActor();
+    monActor.setPosition(100, 100);
+    this.actors.push(monActor);
+
+    // block
+    var blockActor = new BlockActor();
+    blockActor.setPosition(0, 30);
+    this.actors.push(blockActor);
 }
 
 Framework.prototype.start = function(){

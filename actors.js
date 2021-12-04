@@ -1,5 +1,6 @@
 // Actor
 function ActorBase() {
+    this.position = {x: 0, y: 0};
     this.components = [];
     // console.log(this);
 }
@@ -11,8 +12,7 @@ ActorBase.prototype.addComponent = function (inComponent) {
 }
 
 ActorBase.prototype.getComponentByType = function (inComponentType) {
-    if(this.components.hasOwnProperty(inComponentType))
-    {
+    if (this.components.hasOwnProperty(inComponentType)) {
         return this.components[inComponentType];
     }
 
@@ -31,6 +31,20 @@ ActorBase.prototype.renderComponents = function (inFramework) {
     }
 }
 
+ActorBase.prototype.getPosition = function() {
+    return this.position;
+}
+
+ActorBase.prototype.setPosition = function(x, y) {
+    this.position.x = x;
+    this.position.y = y;
+}
+
+ActorBase.prototype.addPosition = function(x, y) {
+    this.position.x += x;
+    this.position.y += y;
+}
+
 function CircleActor() {
     ActorBase.call(this);
     this.addComponent(new MoveComponent(this));
@@ -40,3 +54,14 @@ function CircleActor() {
 // 상속
 // ACircle.prototype.__proto__ = AActor.prototype; // 비표준 방식
 CircleActor.prototype = Object.create(ActorBase.prototype); // 표준 방식
+
+
+function BlockActor() {
+    ActorBase.call(this);
+    // this.addComponent(new MoveComponent(this));
+    this.addComponent(new ShapeComponent(this));
+}
+
+// 상속
+// ACircle.prototype.__proto__ = AActor.prototype; // 비표준 방식
+BlockActor.prototype = Object.create(ActorBase.prototype); // 표준 방식

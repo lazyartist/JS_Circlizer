@@ -31,7 +31,6 @@ ComponentBase.prototype.render = function () {
 function MoveComponent(inActor) {
     ComponentBase.call(this, ComponentType_Move, inActor);
 
-    this.position = {x: 0, y: 0}; // todo move to actor
     this.speedMax = { x: 6, y: 50 };
     this.speed = { x: 0, y: 0 };
     this.friction = { x: -70, y: 0 };
@@ -46,8 +45,6 @@ MoveComponent.prototype.update = function (inFramework) {
 
     var gravity = inFramework.getGravity();
     var deltaTime = inFramework.getDeltaTime();
-
-    this.updateSpeedByDirection(inFramework);
 
     this.speed.x += this.accel.x;
     this.speed.y += this.accel.y;
@@ -67,6 +64,7 @@ MoveComponent.prototype.update = function (inFramework) {
         speedSignAfter = this.speed.x / Math.abs(this.speed.x);
     }
 
+    // speed 계산 이전과 이후 부호가 바뀌었다면 마찰력에 의한 것이기 때문에 멈춰준다.
     if(speedSignBefore != speedSignAfter)
     {
         this.speed.x = 0;
@@ -79,8 +77,7 @@ MoveComponent.prototype.update = function (inFramework) {
 
     console.log(this.speed.x);
 
-    this.position.x += this.speed.x;
-    this.position.y += this.speed.y;
+    this.getActor().addPosition(this.speed.x, this.speed.y);
 }
 
 MoveComponent.prototype.clearSpeed = function () {
@@ -114,10 +111,6 @@ MoveComponent.prototype.updateSpeedByDirection = function (inFramework) {
     this.accel.y *= inFramework.getDeltaTime();
 }
 
-MoveComponent.prototype.getPosition = function() {
-    return this.position;
-}
-
 MoveComponent.prototype.isPressedKey = function(inkeys, inKey) {
     const result = inkeys[inKey.charCodeAt(0)];
     return result;
@@ -132,14 +125,10 @@ function ShapeComponent(inActor) {
 ShapeComponent.prototype = Object.create(ComponentBase.prototype);
 
 ShapeComponent.prototype.render = function (inFramework) {
-    var moveComponent = this.getActor().getComponentByType(ComponentType_Move);
-    if(null !== moveComponent)
-    {
-        var position = moveComponent.getPosition();
-        var canvasContext = inFramework.getCanvasContext();
+    var position = this.getActor().getPosition();
+    var canvasContext = inFramework.getCanvasContext();
 
-        // draw
-        canvasContext.fillStyle = 'green';
-        canvasContext.fillRect(position.x, position.y, this.size.x, this.size.y);
-    }
+    // draw
+    canvasContext.fillStyle = 'green';
+    canvasContext.fillRect(position.x, position.y, this.size.x, this.size.y);
 }

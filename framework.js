@@ -1,100 +1,102 @@
-function Framework(){
-    this.canvas;
-    this.canvasContext;
+class Framework {
+    constructor() {
+        this.canvas;
+        this.canvasContext;
 
-    this.keys = [];
-    this.fps = 60;
-    this.deltaTime = 1 / this.fps;
+        this.keys = [];
+        this.fps = 60;
+        this.deltaTime = 1 / this.fps;
 
-    // this.gravity = 9.8;
-    this.gravity = 1;
-    this.actors = [];
+        // this.gravity = 9.8;
+        this.gravity = 1;
+        this.actors = [];
 
-    this.playerActor = null;
-}
-
-Framework.prototype.init = function() {
-    var thisFramework = this;
-    var body = document.getElementById('body');
-    body.onkeydown = function (e) {
-        // console.log(e);
-        // thisFramework.keys[e.code] = true; // 이 시점에 this는 body
-        thisFramework.keys[e.keyCode] = true; // 이 시점에 this는 body
-    }
-    body.onkeyup = function (e) {
-        // console.log(e);
-        // thisFramework.keys[e.code] = false;
-        thisFramework.keys[e.keyCode] = false;
+        this.playerActor = null;
     }
 
-    this.canvas = document.getElementById('canvas');
-    this.canvasContext = canvas.getContext('2d');
+    init() {
+        var thisFramework = this;
+        var body = document.getElementById('body');
+        body.onkeydown = function (e) {
+            // console.log(e);
+            // thisFramework.keys[e.code] = true; // 이 시점에 this는 body
+            thisFramework.keys[e.keyCode] = true; // 이 시점에 this는 body
+        }
+        body.onkeyup = function (e) {
+            // console.log(e);
+            // thisFramework.keys[e.code] = false;
+            thisFramework.keys[e.keyCode] = false;
+        }
 
-    this.playerActor = new CircleActor();
+        this.canvas = document.getElementById('canvas');
+        this.canvasContext = canvas.getContext('2d');
 
-    this.actors.push(new ActorBase());
-    this.actors.push(this.playerActor);
+        this.playerActor = new CircleActor();
 
-    // mon
-    var monActor = new CircleActor();
-    monActor.setPosition(100, 100);
-    this.actors.push(monActor);
+        this.actors.push(new ActorBase());
+        this.actors.push(this.playerActor);
 
-    // block
-    var blockActor = new BlockActor();
-    blockActor.setPosition(0, 30);
-    this.actors.push(blockActor);
-}
+        // mon
+        var monActor = new CircleActor();
+        monActor.setPosition(100, 100);
+        this.actors.push(monActor);
 
-Framework.prototype.start = function(){
-    var thisFramework = this;
-    this.gameLoop.bind(this);
-    window.setInterval(function (){
-        thisFramework.gameLoop(); // 여기서 this는 window 객체를 가리키므로 Framwork의 this를 캡쳐하여 사용한다.
-        // gameLoop();
-    }, 1000 / this.fps);
-}
+        // block
+        var blockActor = new BlockActor();
+        blockActor.setPosition(0, 30);
+        this.actors.push(blockActor);
+    }
 
-Framework.prototype.isPressedKey = function(inKey) {
-    const result = this.keys[inKey.charCodeAt(0)];
-    // console.log(this.keys);
-    return result;
-}
+    start() {
+        var thisFramework = this;
+        this.gameLoop.bind(this);
+        window.setInterval(function () {
+            thisFramework.gameLoop(); // 여기서 this는 window 객체를 가리키므로 Framwork의 this를 캡쳐하여 사용한다.
+            // gameLoop();
+        }, 1000 / this.fps);
+    }
 
-Framework.prototype.getCanvasContext = function(inKey) {
-    return this.canvasContext;
-}
+    isPressedKey(inKey) {
+        const result = this.keys[inKey.charCodeAt(0)];
+        // console.log(this.keys);
+        return result;
+    }
 
-Framework.prototype.getDeltaTime = function() {
-    return this.deltaTime;
-}
+    getCanvasContext(inKey) {
+        return this.canvasContext;
+    }
 
-Framework.prototype.getGravity = function() {
-    return this.gravity;
-}
+    getDeltaTime() {
+        return this.deltaTime;
+    }
 
-Framework.prototype.updateInput = function() {
-    var moveComponent = this.playerActor.getComponentByType(ComponentType_Move);
-    if(null !== moveComponent)
-    {
-        moveComponent.updateSpeedByDirection(this);
+    getGravity() {
+        return this.gravity;
+    }
+
+    updateInput() {
+        var moveComponent = this.playerActor.getComponentByType(ComponentType_Move);
+        if (null !== moveComponent) {
+            moveComponent.updateSpeedByDirection(this);
+        }
+    }
+
+    update() {
+        this.actors.forEach(actor => actor.updateComponents(this));
+    }
+
+    render() {
+        // clear canvas
+        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        var thisFramework = this;
+        this.actors.forEach(actor => actor.renderComponents(thisFramework));
+    }
+
+    gameLoop() {
+        this.updateInput();
+        this.update();
+        this.render();
     }
 }
 
-Framework.prototype.update = function() {
-    this.actors.forEach(actor => actor.updateComponents(this));
-}
-
-Framework.prototype.render = function() {
-    // clear canvas
-    this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    var thisFramework = this;
-    this.actors.forEach(actor => actor.renderComponents(thisFramework));
-}
-
-Framework.prototype.gameLoop = function() {
-    this.updateInput();
-    this.update();
-    this.render();
-}

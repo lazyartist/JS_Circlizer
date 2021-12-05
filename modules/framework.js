@@ -13,7 +13,7 @@ export class Framework {
         this.deltaTime = 1 / this.fps;
 
         // this.gravity = 9.8;
-        this.gravity = .3;
+        this.gravity = .8;
         this.actors = [];
 
         this.playerActor = null;

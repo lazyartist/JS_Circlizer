@@ -153,6 +153,7 @@ export class CollisionComponent extends ComponentBase {
         this.isCollided = false;
 
         this.size = {x: 0, y: 0};
+        this.isRigidBody = false;
     }
 
     getCollisionType() {
@@ -177,6 +178,14 @@ export class CollisionComponent extends ComponentBase {
 
     setSize(inSize) {
         this.size = inSize;
+    }
+
+    getIsRigidBody() {
+        return this.isRigidBody;
+    }
+
+    setIsRigidBody(inValue) {
+        this.isRigidBody = inValue;
     }
 
     clearIsCollided() {

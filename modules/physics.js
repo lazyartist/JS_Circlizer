@@ -36,7 +36,7 @@ export class Physics {
                 physicsComponent_other.clearIsCollided();
 
                 if (isDoHitTest) {
-                    let isCollided = this.checkCollision(physicsComponent, physicsComponent_other);
+                    let isCollided = this.checkBoxCollision(physicsComponent, physicsComponent_other);
                     if (isCollided) {
                         // console.log("Collided!!", actor, otherActor);
                         physicsComponent.notifyCollision(otherActor);
@@ -70,16 +70,20 @@ export class Physics {
         // }
     }
 
-    checkCollision(inCollisionComponent_l, inCollisionComponent_r) {
+    checkBoxCollision(inCollisionComponent_l, inCollisionComponent_r) {
         let position_l = inCollisionComponent_l.getActor().getPosition();
         let position_r = inCollisionComponent_r.getActor().getPosition();
         let size_l = inCollisionComponent_l.getSize();
         let size_r = inCollisionComponent_r.getSize();
+
         let rect_l = {x1: position_l.x, y1: position_l.y, x2: position_l.x + size_l.x, y2: position_l.y + size_l.y};
         let rect_r = {x1: position_r.x, y1: position_r.y, x2: position_r.x + size_r.x, y2: position_r.y + size_r.y};
 
-        if (rect_r.x1 <= rect_l.x2 && rect_r.x2 >= rect_l.x1) {
-            console.log("hit x");
+        let collidedX = rect_r.x1 <= rect_l.x2 && rect_r.x2 >= rect_l.x1;
+        let collidedY = rect_r.y1 <= rect_l.y2 && rect_r.y2 >= rect_l.y1;
+
+        if (collidedX && collidedY) {
+            console.log("hit");
             return true;
         }
 

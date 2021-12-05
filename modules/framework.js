@@ -1,10 +1,14 @@
-class Framework {
+// import {CollisionSystem} from "./collision_system.js"
+import * as ActorModule from "./actors.js"
+import * as ComponentModule from "./components.js"
+
+export class Framework {
     constructor() {
-        this.canvas;
-        this.canvasContext;
+        this.canvas = null;
+        this.canvasContext = null;
 
         this.keys = [];
-        this.fps = 60;
+        this.fps = 30;
         this.deltaTime = 1 / this.fps;
 
         // this.gravity = 9.8;
@@ -15,8 +19,8 @@ class Framework {
     }
 
     init() {
-        var thisFramework = this;
-        var body = document.getElementById('body');
+        let thisFramework = this;
+        let body = document.getElementById('body');
         body.onkeydown = function (e) {
             // console.log(e);
             // thisFramework.keys[e.code] = true; // 이 시점에 this는 body
@@ -29,26 +33,26 @@ class Framework {
         }
 
         this.canvas = document.getElementById('canvas');
-        this.canvasContext = canvas.getContext('2d');
+        this.canvasContext = this.canvas.getContext('2d');
 
-        this.playerActor = new CircleActor();
+        this.playerActor = new ActorModule.CircleActor();
 
-        this.actors.push(new ActorBase());
+        this.actors.push(new ActorModule.ActorBase());
         this.actors.push(this.playerActor);
 
         // mon
-        var monActor = new CircleActor();
+        let monActor = new ActorModule.CircleActor();
         monActor.setPosition(100, 100);
         this.actors.push(monActor);
 
         // block
-        var blockActor = new BlockActor();
+        let blockActor = new ActorModule.BlockActor();
         blockActor.setPosition(0, 30);
         this.actors.push(blockActor);
     }
 
     start() {
-        var thisFramework = this;
+        let thisFramework = this;
         this.gameLoop.bind(this);
         window.setInterval(function () {
             thisFramework.gameLoop(); // 여기서 this는 window 객체를 가리키므로 Framwork의 this를 캡쳐하여 사용한다.
@@ -57,12 +61,10 @@ class Framework {
     }
 
     isPressedKey(inKey) {
-        const result = this.keys[inKey.charCodeAt(0)];
-        // console.log(this.keys);
-        return result;
+        return this.keys[inKey.charCodeAt(0)];
     }
 
-    getCanvasContext(inKey) {
+    getCanvasContext() {
         return this.canvasContext;
     }
 
@@ -75,7 +77,7 @@ class Framework {
     }
 
     updateInput() {
-        var moveComponent = this.playerActor.getComponentByType(ComponentType_Move);
+        let moveComponent = this.playerActor.getComponentByType(ComponentModule.Type_Move);
         if (null !== moveComponent) {
             moveComponent.updateSpeedByDirection(this);
         }
@@ -89,8 +91,7 @@ class Framework {
         // clear canvas
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        var thisFramework = this;
-        this.actors.forEach(actor => actor.renderComponents(thisFramework));
+        this.actors.forEach(actor => actor.renderComponents(this));
     }
 
     gameLoop() {
@@ -99,4 +100,3 @@ class Framework {
         this.render();
     }
 }
-

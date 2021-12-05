@@ -1,8 +1,10 @@
+import * as ComponentModule from "./components.js"
+
 // Actor
-class ActorBase {
+export class ActorBase {
     constructor() {
         this.position = {x: 0, y: 0};
-        this.components = [];
+        this.components = {};
     }
 
     addComponent(inComponent) {
@@ -18,13 +20,13 @@ class ActorBase {
     }
 
     updateComponents(inFramework) {
-        for (var component in this.components) {
+        for (let component in this.components) {
             this.components[component].update(inFramework);
         }
     }
 
     renderComponents(inFramework) {
-        for (var component in this.components) {
+        for (const component in this.components) {
             this.components[component].render(inFramework);
         }
     }
@@ -44,12 +46,12 @@ class ActorBase {
     }
 }
 
-class CircleActor extends ActorBase {
+export class CircleActor extends ActorBase {
     constructor() {
         super();
 
-        this.addComponent(new MoveComponent(this));
-        this.addComponent(new ShapeComponent(this));
+        this.addComponent(new ComponentModule.MoveComponent(this));
+        this.addComponent(new ComponentModule.ShapeComponent(this));
     }
 
     // 상속
@@ -57,11 +59,12 @@ class CircleActor extends ActorBase {
     // CircleActor.prototype = Object.create(ActorBase.prototype); // 표준 방식
 }
 
-class BlockActor extends ActorBase {
+export class BlockActor extends ActorBase {
     constructor() {
         super();
 
-        // this.addComponent(new MoveComponent(this));
-        this.addComponent(new ShapeComponent(this));
+        // this.addComponent(new ComponentModule.MoveComponent(this));
+        this.addComponent(new ComponentModule.ShapeComponent(this));
     }
 }
+

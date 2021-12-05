@@ -1,19 +1,27 @@
 // ComponentType
-var ComponentType_Base = "ComponentType_Base";
-var ComponentType_Move = "ComponentType_Move";
-var ComponentType_Shape = "ComponentType_Shape";
-var ComponentType_Physics = "ComponentType_Physics";
+
+// Symbol.for : public member 전역공간에서 공유되는 심볼.
+// 여기저기서 많이 사용되는 공용상수를 사용할때 사용
+// 오브젝트에 동적으로 Symbol 키를 추가하면 for..in으로 조회가 안된다. 정적으로 유일한 키를 만들 경우에 사용.
+// const Type_Base = Symbol.for("ComponentType_Base1");
+// const ComponentType_Move = Symbol.for("ComponentType_Move2");
+// const ComponentType_Shape = Symbol.for("ComponentType_Shape3");
+// const ComponentType_Physics = Symbol.for("ComponentType_Physics4");
+export const Type_Base = "Type_Base";
+export const Type_Move = "ComponentType_Move";
+export const Type_Shape = "ComponentType_Shape";
+export const Type_Physics = "ComponentType_Physics";
 
 // ComponentBase
-class ComponentBase {
+export class ComponentBase {
     constructor(inActor) {
         this.actor = inActor;
-        this.type = ComponentType_Base;
+        this.type = Type_Base;
     }
 
     // Component.prototype.actor = inActor; // 모든 인스턴스가 공유하는 객체가 된다.
 
-    getType(inType) {
+    getType() {
         return this.type;
     }
 
@@ -31,12 +39,10 @@ class ComponentBase {
 }
 
 // MoveComponent
-class MoveComponent extends ComponentBase {
+export class MoveComponent extends ComponentBase {
     constructor(inActor) {
         super(inActor);
-        this.type = ComponentType_Move;
-
-        this.type = ComponentType_Move;
+        this.type = Type_Move;
 
         this.speedMax = {x: 6, y: 50};
         this.speed = {x: 0, y: 0};
@@ -49,27 +55,27 @@ class MoveComponent extends ComponentBase {
     update(inFramework) {
         // Component.prototype.update.call(this);
 
-        var gravity = inFramework.getGravity();
-        var deltaTime = inFramework.getDeltaTime();
+        let gravity = inFramework.getGravity();
+        let deltaTime = inFramework.getDeltaTime();
 
         this.speed.x += this.accel.x;
         this.speed.y += this.accel.y;
 
-        var speedSignBefore = 1;
-        if (0 != this.speed.x) {
+        let speedSignBefore = 1;
+        if (0 !== this.speed.x) {
             speedSignBefore = this.speed.x / Math.abs(this.speed.x);
         }
 
         this.speed.x += this.friction.x * deltaTime * speedSignBefore;
         this.speed.y += gravity * deltaTime;
 
-        var speedSignAfter = 1;
-        if (0 != this.speed.x) {
+        let speedSignAfter = 1;
+        if (0 !== this.speed.x) {
             speedSignAfter = this.speed.x / Math.abs(this.speed.x);
         }
 
         // speed 계산 이전과 이후 부호가 바뀌었다면 마찰력에 의한 것이기 때문에 멈춰준다.
-        if (speedSignBefore != speedSignAfter) {
+        if (speedSignBefore !== speedSignAfter) {
             this.speed.x = 0;
         }
 
@@ -112,24 +118,19 @@ class MoveComponent extends ComponentBase {
         this.accel.x *= inFramework.getDeltaTime();
         this.accel.y *= inFramework.getDeltaTime();
     }
-
-    isPressedKey(inkeys, inKey) {
-        const result = inkeys[inKey.charCodeAt(0)];
-        return result;
-    }
 }
 
 // ShapeComponent
-class ShapeComponent extends ComponentBase {
+export class ShapeComponent extends ComponentBase {
     constructor(inActor) {
         super(inActor);
-        this.type = ComponentType_Shape;
+        this.type = Type_Shape;
         this.size = {x: 10, y: 10};
     }
 
     render(inFramework) {
-        var position = this.getActor().getPosition();
-        var canvasContext = inFramework.getCanvasContext();
+        let position = this.getActor().getPosition();
+        let canvasContext = inFramework.getCanvasContext();
 
         // draw
         canvasContext.fillStyle = 'green';

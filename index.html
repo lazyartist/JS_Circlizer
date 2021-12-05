@@ -1,12 +1,11 @@
 <html>
 
-<script src="actors.js"></script>
-<script src="components.js"></script>
-<script src="framework.js"></script>
 <body id="body">
     <!-- canvas는 width, height attribute를 사용하여 크기를 조절해야한다. css로 조작하면 원본을 스케일링하므로 이미지가 왜곡됨은 물론 정확한 조작이 불가능하다. -->
     <canvas id="canvas" style="border: 1px solid red;" width="500" height="500"></canvas>
 </body>
+
+<script type="module" src="main.js"></script>
 
 <script>
     // 대본작성
@@ -18,9 +17,11 @@
     // 대본을 <script> 영역에 작성하면 브라우저가 읽고 행동(연기)한다.
     // 프로그램이 실행할 것들을 처음부터 끝까지 작성
 
-    var framework = new Framework();
-    framework.init();
-    framework.start();
+    // var framework = new Framework();
+    // framework.init();
+    // framework.start();
+
+    // var c = new CollisionSystem();
 
     // var canvas;
     // var ctx;

@@ -1,4 +1,4 @@
-// ComponentType
+import * as Physics from "./physics.js";
 
 // Symbol.for : public member 전역공간에서 공유되는 심볼.
 // 여기저기서 많이 사용되는 공용상수를 사용할때 사용
@@ -126,6 +126,11 @@ export class ShapeComponent extends ComponentBase {
         super(inActor);
         this.type = Type_Shape;
         this.size = {x: 10, y: 10};
+        this.setColor("gray");
+    }
+
+    setColor(inColor) {
+        this.color = inColor;
     }
 
     render(inFramework) {
@@ -133,7 +138,68 @@ export class ShapeComponent extends ComponentBase {
         let canvasContext = inFramework.getCanvasContext();
 
         // draw
-        canvasContext.fillStyle = 'green';
+        canvasContext.fillStyle = this.color;
         canvasContext.fillRect(position.x, position.y, this.size.x, this.size.y);
+    }
+}
+
+// CollisionComponent
+export class CollisionComponent extends ComponentBase {
+    constructor(inActor) {
+        super(inActor);
+        this.type = Type_Physics;
+        this.collisionType = Physics.Channel_None;
+        this.collisionResponses = Physics.Channel_None;
+        this.isCollided = false;
+
+        this.size = {x: 0, y: 0};
+    }
+
+    getCollisionType() {
+        return this.collisionType;
+    }
+
+    setCollisionType(inCollisionType) {
+        this.collisionType = inCollisionType;
+    }
+
+    getCollisionResponses() {
+        return this.collisionResponses;
+    }
+
+    setCollisionResponses(inCollisionResponses) {
+        this.collisionResponses = inCollisionResponses;
+    }
+
+    getSize() {
+        return this.size;
+    }
+
+    setSize(inSize) {
+        this.size = inSize;
+    }
+
+    clearIsCollided() {
+        this.isCollided = false;
+    }
+
+    notifyCollision(inOtherActor) {
+        console.log("notifyCollision", this, inOtherActor);
+        this.isCollided = true;
+    }
+
+    render(inFramework) {
+        let position = this.getActor().getPosition();
+        let canvasContext = inFramework.getCanvasContext();
+
+        // draw
+        if (this.isCollided) {
+            canvasContext.strokeStyle = 'yellow';
+        } else {
+            canvasContext.strokeStyle = 'green';
+        }
+
+        canvasContext.strokeRect(position.x, position.y, this.size.x, this.size.y);
+        // canvasContext.stroke(); // clearRect()로 지워지지 않는다.
     }
 }

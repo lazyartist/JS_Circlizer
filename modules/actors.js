@@ -1,4 +1,5 @@
 import * as ComponentModule from "./components.js"
+import * as PhysicsModule from "./physics.js"
 
 // Actor
 export class ActorBase {
@@ -51,7 +52,16 @@ export class CircleActor extends ActorBase {
         super();
 
         this.addComponent(new ComponentModule.MoveComponent(this));
-        this.addComponent(new ComponentModule.ShapeComponent(this));
+
+        let shapeComponent = new ComponentModule.ShapeComponent(this);
+        shapeComponent.setColor("red");
+        this.addComponent(shapeComponent);
+
+        let collisionComponent = new ComponentModule.CollisionComponent(this);
+        collisionComponent.setCollisionType(PhysicsModule.Channel_Movable);
+        collisionComponent.setCollisionResponses(PhysicsModule.Channel_Static | PhysicsModule.Channel_Movable);
+        collisionComponent.setSize({x: 10, y: 10});
+        this.addComponent(collisionComponent);
     }
 
     // 상속
@@ -63,8 +73,12 @@ export class BlockActor extends ActorBase {
     constructor() {
         super();
 
-        // this.addComponent(new ComponentModule.MoveComponent(this));
         this.addComponent(new ComponentModule.ShapeComponent(this));
+
+        let collisionComponent = new ComponentModule.CollisionComponent(this);
+        collisionComponent.setCollisionType(PhysicsModule.Channel_Static);
+        collisionComponent.setCollisionResponses(PhysicsModule.Channel_Movable);
+        collisionComponent.setSize({x: 10, y: 10});
+        this.addComponent(collisionComponent);
     }
 }
-

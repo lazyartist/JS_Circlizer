@@ -1,6 +1,7 @@
-// import {CollisionSystem} from "./collision_system.js"
+// import {CollisionSystem} from "./collision.js"
 import * as ActorModule from "./actors.js"
 import * as ComponentModule from "./components.js"
+import * as PhysicsModule from "./physics.js"
 
 export class Framework {
     constructor() {
@@ -8,14 +9,16 @@ export class Framework {
         this.canvasContext = null;
 
         this.keys = [];
-        this.fps = 30;
+        this.fps = 10;
         this.deltaTime = 1 / this.fps;
 
         // this.gravity = 9.8;
-        this.gravity = 1;
+        this.gravity = .3;
         this.actors = [];
 
         this.playerActor = null;
+
+        this.physics = new PhysicsModule.Physics();
     }
 
     init() {
@@ -34,21 +37,6 @@ export class Framework {
 
         this.canvas = document.getElementById('canvas');
         this.canvasContext = this.canvas.getContext('2d');
-
-        this.playerActor = new ActorModule.CircleActor();
-
-        this.actors.push(new ActorModule.ActorBase());
-        this.actors.push(this.playerActor);
-
-        // mon
-        let monActor = new ActorModule.CircleActor();
-        monActor.setPosition(100, 100);
-        this.actors.push(monActor);
-
-        // block
-        let blockActor = new ActorModule.BlockActor();
-        blockActor.setPosition(0, 30);
-        this.actors.push(blockActor);
     }
 
     start() {
@@ -58,6 +46,14 @@ export class Framework {
             thisFramework.gameLoop(); // 여기서 this는 window 객체를 가리키므로 Framwork의 this를 캡쳐하여 사용한다.
             // gameLoop();
         }, 1000 / this.fps);
+    }
+
+    addActor(inActor){
+        this.actors.push(inActor);
+    }
+
+    setPlayerActor(inActor){
+        this.playerActor = inActor;
     }
 
     isPressedKey(inKey) {
@@ -84,6 +80,10 @@ export class Framework {
     }
 
     update() {
+        // update physics
+        this.physics.updateCollision(this.actors);
+
+        // update
         this.actors.forEach(actor => actor.updateComponents(this));
     }
 

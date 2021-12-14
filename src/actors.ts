@@ -3,8 +3,13 @@ import * as PhysicsModule from "./physics.js"
 
 // Actor
 export class ActorBase {
+    position;
+    pivot;
+    components;
+
     constructor() {
-        this.position = {x: 0, y: 0};
+        this.position = { x: 0, y: 0 };
+        this.pivot = { x: 0.5, y: 1.0 }; // pivot: lefttop(0,0), rightbottom(1,1)
         this.components = {};
     }
 
@@ -41,6 +46,24 @@ export class ActorBase {
         this.position.y = y;
     }
 
+    getPivot() {
+        return this.pivot;
+    }
+
+    setPivot(x, y) {
+        this.pivot.x = x;
+        this.pivot.y = y;
+    }
+
+    getWorldRect(inSize) {
+        let x1 = this.position.x - (inSize.x * this.pivot.x);
+        let y1 = this.position.y - (inSize.y * this.pivot.y);
+
+        let rect = { x: x1, y: y1, w: inSize.x, h: inSize.y, x2: x1 + inSize.x, y2: y1 + inSize.y };
+
+        return rect;
+    }
+
     addPosition(x, y) {
         this.position.x += x;
         this.position.y += y;
@@ -54,13 +77,14 @@ export class CircleActor extends ActorBase {
         this.addComponent(new ComponentModule.MoveComponent(this));
 
         let shapeComponent = new ComponentModule.ShapeComponent(this);
+        shapeComponent.setSize(50, 50);
         shapeComponent.setColor("red");
         this.addComponent(shapeComponent);
 
         let collisionComponent = new ComponentModule.CollisionComponent(this);
         collisionComponent.setCollisionType(PhysicsModule.Channel_Movable);
         collisionComponent.setCollisionResponses(PhysicsModule.Channel_Static | PhysicsModule.Channel_Movable);
-        collisionComponent.setSize({x: 10, y: 10});
+        collisionComponent.setSize(50, 50);
         this.addComponent(collisionComponent);
     }
 
@@ -73,12 +97,17 @@ export class BlockActor extends ActorBase {
     constructor() {
         super();
 
-        this.addComponent(new ComponentModule.ShapeComponent(this));
+        let shapeComponent = new ComponentModule.ShapeComponent(this);
+        shapeComponent.setSize(50, 50);
+        // shapeComponent.setColor("red");
+        this.addComponent(shapeComponent);
+
+        // this.addComponent(new ComponentModule.ShapeComponent(this));
 
         let collisionComponent = new ComponentModule.CollisionComponent(this);
         collisionComponent.setCollisionType(PhysicsModule.Channel_Static);
         collisionComponent.setCollisionResponses(PhysicsModule.Channel_Movable);
-        collisionComponent.setSize({x: 10, y: 10});
+        collisionComponent.setSize(50, 50);
         this.addComponent(collisionComponent);
     }
 }

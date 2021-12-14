@@ -4,21 +4,41 @@ import * as ComponentModule from "./components.js"
 import * as PhysicsModule from "./physics.js"
 
 export class Framework {
+    canvas : any;
+    canvasContext : any;
+
+    keys : Array<Boolean>;
+    fps = 10;
+    deltaTime = 1 / this.fps;
+
+    // this.gravity = 9.8;
+    gravity = .8;
+    actors = [];
+
+    playerActor = null;
+
+    physics : PhysicsModule.Physics;
+
     constructor() {
-        this.canvas = null;
-        this.canvasContext = null;
-
-        this.keys = [];
-        this.fps = 10;
-        this.deltaTime = 1 / this.fps;
-
-        // this.gravity = 9.8;
-        this.gravity = .8;
-        this.actors = [];
-
-        this.playerActor = null;
 
         this.physics = new PhysicsModule.Physics();
+
+        this.keys = [];
+
+        // this.canvas = null;
+        // this.canvasContext = null;
+
+        // this.keys = [];
+        // this.fps = 10;
+        // this.deltaTime = 1 / this.fps;
+
+        // // this.gravity = 9.8;
+        // this.gravity = .8;
+        // this.actors = [];
+
+        // this.playerActor = null;
+
+        // this.physics = new PhysicsModule.Physics();
     }
 
     init() {
@@ -80,11 +100,12 @@ export class Framework {
     }
 
     update() {
-        // update physics
-        this.physics.updateCollision(this.actors);
-
         // update
         this.actors.forEach(actor => actor.updateComponents(this));
+
+        // 컴포넌트 업데이트하고 물리 위치 갱신
+        // update physics
+        this.physics.updateCollision(this.actors);
     }
 
     render() {

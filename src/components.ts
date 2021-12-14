@@ -1,4 +1,5 @@
 import * as Physics from "./physics.js";
+import * as CommonModule from "./common.js";
 
 // Symbol.for : public member 전역공간에서 공유되는 심볼.
 // 여기저기서 많이 사용되는 공용상수를 사용할때 사용
@@ -14,6 +15,9 @@ export const Type_Physics = "ComponentType_Physics";
 
 // ComponentBase
 export class ComponentBase {
+    actor;
+    type;
+
     constructor(inActor) {
         this.actor = inActor;
         this.type = Type_Base;
@@ -40,16 +44,27 @@ export class ComponentBase {
 
 // MoveComponent
 export class MoveComponent extends ComponentBase {
+    type;
+    speedMax;
+    speed;
+    this;
+    friction;
+    accel;
+    accelMax;
+    jumpSpeed;
+
     constructor(inActor) {
+
         super(inActor);
         this.type = Type_Move;
 
-        this.speedMax = {x: 6, y: 50};
-        this.speed = {x: 0, y: 0};
-        this.friction = {x: -70, y: 0};
-        this.accel = {x: 0, y: 0};
-        this.accelMax = {x: 90, y: 0};
-        this.jumpSpeed = {x: 0, y: 50};
+        this.speedMax = { x: 6, y: 50 };
+        this.speed = { x: 0, y: 0 };
+        // this.size = new CommonModule.Size();
+        this.friction = { x: -70, y: 0 };
+        this.accel = { x: 0, y: 0 };
+        this.accelMax = { x: 90, y: 0 };
+        this.jumpSpeed = { x: 0, y: 50 };
     }
 
     update(inFramework) {
@@ -83,13 +98,13 @@ export class MoveComponent extends ComponentBase {
             this.speed.x = Math.abs(this.speedMax.x) * speedSignAfter;
         }
 
-        console.log(this.speed.x);
+        // console.log(this.speed.x);
 
         this.getActor().addPosition(this.speed.x, this.speed.y);
     }
 
     clearSpeed() {
-        this.speed = {x: 0, y: 0};
+        this.speed = { x: 0, y: 0 };
     }
 
     updateSpeedByDirection(inFramework) {
@@ -122,11 +137,22 @@ export class MoveComponent extends ComponentBase {
 
 // ShapeComponent
 export class ShapeComponent extends ComponentBase {
+    type: any;
+    size;
+    color;
+
     constructor(inActor) {
         super(inActor);
         this.type = Type_Shape;
-        this.size = {x: 10, y: 10};
+        this.size = new CommonModule.Size(10, 10);
+        // this.size = {x: 10, y: 10};
         this.setColor("gray");
+    }
+
+
+    setSize(x, y) {
+        this.size.x = x;
+        this.size.y = y;
     }
 
     setColor(inColor) {
@@ -134,17 +160,28 @@ export class ShapeComponent extends ComponentBase {
     }
 
     render(inFramework) {
-        let position = this.getActor().getPosition();
+        let rect = this.getActor().getWorldRect(this.size);
+        // let position = this.getActor().getPosition();
         let canvasContext = inFramework.getCanvasContext();
+
 
         // draw
         canvasContext.fillStyle = this.color;
-        canvasContext.fillRect(position.x, position.y, this.size.x, this.size.y);
+        // canvasContext.fillRect(position.x, position.y, this.size.x, this.size.y);
+        canvasContext.fillRect(rect.x, rect.y, rect.w, rect.h);
     }
 }
 
 // CollisionComponent
 export class CollisionComponent extends ComponentBase {
+    type;
+    collisionType;
+    collisionResponses;
+    isCollided;
+    size;
+    
+    isRigidBody;
+
     constructor(inActor) {
         super(inActor);
         this.type = Type_Physics;
@@ -152,7 +189,9 @@ export class CollisionComponent extends ComponentBase {
         this.collisionResponses = Physics.Channel_None;
         this.isCollided = false;
 
-        this.size = {x: 0, y: 0};
+        this.size = new CommonModule.Size(0, 0);
+        // var a = this.size.x;
+        // this.size = {x: 0, y: 0};
         this.isRigidBody = false;
     }
 
@@ -176,9 +215,22 @@ export class CollisionComponent extends ComponentBase {
         return this.size;
     }
 
-    setSize(inSize) {
-        this.size = inSize;
+    setSize(x, y) {
+        this.size.x = x;
+        this.size.y = y;
     }
+
+    // getWorldRect(inSize) {
+    //     let position = this.getActor().getPosition();
+    //     let pivot = this.getActor().getPivot();
+    //
+    //     let x1 = position.x - (this.size.x * pivot.x);
+    //     let y1 = position.y - (this.size.y * pivot.y);
+    //
+    //     let rect = {x: x1, y: y1, w: this.size.x, h: this.size.y, x2: x1 + this.size.x, y2: y1 + this.size.y};
+    //
+    //     return rect;
+    // }
 
     getIsRigidBody() {
         return this.isRigidBody;
@@ -198,7 +250,7 @@ export class CollisionComponent extends ComponentBase {
     }
 
     render(inFramework) {
-        let position = this.getActor().getPosition();
+        let rect = this.getActor().getWorldRect(this.size);
         let canvasContext = inFramework.getCanvasContext();
 
         // draw
@@ -208,7 +260,8 @@ export class CollisionComponent extends ComponentBase {
             canvasContext.strokeStyle = 'green';
         }
 
-        canvasContext.strokeRect(position.x, position.y, this.size.x, this.size.y);
+        canvasContext.strokeRect(rect.x, rect.y, rect.w, rect.h);
+        // canvasContext.strokeRect(position.x, position.y, this.size.x, this.size.y);
         // canvasContext.stroke(); // clearRect()로 지워지지 않는다.
     }
 }

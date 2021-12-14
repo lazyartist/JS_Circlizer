@@ -38,6 +38,12 @@ export class Physics {
                 if (isDoHitTest) {
                     let isCollided = this.checkBoxCollision(physicsComponent, physicsComponent_other);
                     if (isCollided) {
+
+                        // ridigbody
+                        if(collisionType != Channel_Static && collisionType_other == Channel_Static){
+
+                        }
+
                         // console.log("Collided!!", actor, otherActor);
                         physicsComponent.notifyCollision(otherActor);
                         physicsComponent_other.notifyCollision(actor);

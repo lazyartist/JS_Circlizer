@@ -1,5 +1,7 @@
 import * as Physics from "./physics.js";
 import * as CommonModule from "./common.js";
+import { ActorBase } from "./actors.js";
+import { Framework } from "./framework.js";
 
 // Symbol.for : public member 전역공간에서 공유되는 심볼.
 // 여기저기서 많이 사용되는 공용상수를 사용할때 사용
@@ -8,19 +10,25 @@ import * as CommonModule from "./common.js";
 // const ComponentType_Move = Symbol.for("ComponentType_Move2");
 // const ComponentType_Shape = Symbol.for("ComponentType_Shape3");
 // const ComponentType_Physics = Symbol.for("ComponentType_Physics4");
-export const Type_Base = "Type_Base";
-export const Type_Move = "ComponentType_Move";
-export const Type_Shape = "ComponentType_Shape";
-export const Type_Physics = "ComponentType_Physics";
+
+// Typescript로 변경 후 enum으로 변경
+// export const Type_Base = "Type_Base";
+// export const Type_Move = "ComponentType_Move";
+// export const Type_Shape = "ComponentType_Shape";
+// export const Type_Physics = "ComponentType_Physics";
+
+export enum ComponentType{
+    None, Base, Move, Shape, Physics
+}
 
 // ComponentBase
 export class ComponentBase {
-    actor;
-    type;
+    actor : ActorBase;
+    type : ComponentType;
 
     constructor(inActor) {
         this.actor = inActor;
-        this.type = Type_Base;
+        this.type = ComponentType.Base;
     }
 
     // Component.prototype.actor = inActor; // 모든 인스턴스가 공유하는 객체가 된다.
@@ -44,27 +52,25 @@ export class ComponentBase {
 
 // MoveComponent
 export class MoveComponent extends ComponentBase {
-    type;
-    speedMax;
-    speed;
-    this;
-    friction;
-    accel;
-    accelMax;
-    jumpSpeed;
+    speedMax : CommonModule.Vector2D;
+    speed : CommonModule.Vector2D;
+    friction : CommonModule.Vector2D;
+    accel : CommonModule.Vector2D;
+    accelMax : CommonModule.Vector2D;
+    jumpSpeed : CommonModule.Vector2D;
 
     constructor(inActor) {
 
         super(inActor);
-        this.type = Type_Move;
+        this.type = ComponentType.Move;
 
-        this.speedMax = { x: 6, y: 50 };
-        this.speed = { x: 0, y: 0 };
+        this.speedMax = new CommonModule.Vector2D( 6, 50 );
+        this.speed = new CommonModule.Vector2D( 0, 0 );
         // this.size = new CommonModule.Size();
-        this.friction = { x: -70, y: 0 };
-        this.accel = { x: 0, y: 0 };
-        this.accelMax = { x: 90, y: 0 };
-        this.jumpSpeed = { x: 0, y: 50 };
+        this.friction = new CommonModule.Vector2D( -70, 0 );
+        this.accel = new CommonModule.Vector2D( 0, 0 );
+        this.accelMax = new CommonModule.Vector2D( 90, 0 );
+        this.jumpSpeed = new CommonModule.Vector2D( 0, 50 );
     }
 
     update(inFramework) {
@@ -104,7 +110,7 @@ export class MoveComponent extends ComponentBase {
     }
 
     clearSpeed() {
-        this.speed = { x: 0, y: 0 };
+        this.speed.setXY(0, 0);
     }
 
     updateSpeedByDirection(inFramework) {
@@ -143,12 +149,11 @@ export class ShapeComponent extends ComponentBase {
 
     constructor(inActor) {
         super(inActor);
-        this.type = Type_Shape;
+        this.type = ComponentType.Shape;
         this.size = new CommonModule.Size(10, 10);
         // this.size = {x: 10, y: 10};
         this.setColor("gray");
     }
-
 
     setSize(x, y) {
         this.size.x = x;
@@ -159,16 +164,51 @@ export class ShapeComponent extends ComponentBase {
         this.color = inColor;
     }
 
-    render(inFramework) {
-        let rect = this.getActor().getWorldRect(this.size);
+    render(inFramework : Framework) {
+        let rect : CommonModule.Rect = this.getActor().getWorldRect(this.size);
         // let position = this.getActor().getPosition();
-        let canvasContext = inFramework.getCanvasContext();
+        let canvasContext : CanvasRenderingContext2D = inFramework.getCanvasContext();
 
 
         // draw
         canvasContext.fillStyle = this.color;
         // canvasContext.fillRect(position.x, position.y, this.size.x, this.size.y);
-        canvasContext.fillRect(rect.x, rect.y, rect.w, rect.h);
+        canvasContext.fillRect(rect.x1, rect.y1, rect.w, rect.h);
+    }
+}
+
+// LineComponent
+export class LineComponent extends ShapeComponent {
+    
+    constructor(inActor) {
+        super(inActor);
+        this.type = ComponentType.Shape;
+        this.size = new CommonModule.Size(10, 10);
+        // this.size = {x: 10, y: 10};
+        this.setColor("gray");
+    }
+
+    setSize(x, y) {
+        this.size.x = x;
+        this.size.y = y;
+    }
+
+    setColor(inColor) {
+        this.color = inColor;
+    }
+
+    render(inFramework : Framework) {
+        let rect = this.getActor().getWorldRect(this.size);
+        // let position = this.getActor().getPosition();
+        let canvasContext  = inFramework.getCanvasContext();
+
+        // draw
+        canvasContext.fillStyle = this.color;
+
+        canvasContext.beginPath();       // Start a new path
+        canvasContext.moveTo(rect.x1, rect.y1);
+        canvasContext.lineTo(rect.x2, rect.y2);
+        canvasContext.stroke();
     }
 }
 
@@ -184,7 +224,7 @@ export class CollisionComponent extends ComponentBase {
 
     constructor(inActor) {
         super(inActor);
-        this.type = Type_Physics;
+        this.type = ComponentType.Physics;
         this.collisionType = Physics.Channel_None;
         this.collisionResponses = Physics.Channel_None;
         this.isCollided = false;
@@ -250,7 +290,7 @@ export class CollisionComponent extends ComponentBase {
     }
 
     render(inFramework) {
-        let rect = this.getActor().getWorldRect(this.size);
+        let rect : CommonModule.Rect = this.getActor().getWorldRect(this.size);
         let canvasContext = inFramework.getCanvasContext();
 
         // draw
@@ -260,7 +300,7 @@ export class CollisionComponent extends ComponentBase {
             canvasContext.strokeStyle = 'green';
         }
 
-        canvasContext.strokeRect(rect.x, rect.y, rect.w, rect.h);
+        canvasContext.strokeRect(rect.x1, rect.y1, rect.w, rect.h);
         // canvasContext.strokeRect(position.x, position.y, this.size.x, this.size.y);
         // canvasContext.stroke(); // clearRect()로 지워지지 않는다.
     }

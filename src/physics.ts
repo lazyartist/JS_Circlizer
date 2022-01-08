@@ -1,3 +1,4 @@
+import { ActorBase } from "./actors.js";
 import * as ComponentsModule from "./components.js"
 
 export const Channel_None = 0;
@@ -12,17 +13,17 @@ export class Physics {
 
     updateCollision(inActors) {
         for (let i = 0; i < inActors.length; i++) {
-            let actor = inActors[i];
-            for (let j = i + 1; j < inActors.length; j++) {
-                let otherActor = inActors[j];
+            let actor : ActorBase = inActors[i];
+            for (let jj = i + 1; jj < inActors.length; jj++) {
+                let otherActor = inActors[jj];
 
-                let physicsComponent = actor.getComponentByType(ComponentsModule.Type_Physics);
-                let physicsComponent_other = otherActor.getComponentByType(ComponentsModule.Type_Physics);
+                let collisionComponent : ComponentsModule.CollisionComponent = actor.getComponentByType(ComponentsModule.ComponentType.Physics) as ComponentsModule.CollisionComponent;
+                let collisionComponent_other : ComponentsModule.CollisionComponent = otherActor.getComponentByType(ComponentsModule.ComponentType.Physics) as ComponentsModule.CollisionComponent;
 
-                let collisionType = physicsComponent.getCollisionType();
-                let collisionType_other = physicsComponent_other.getCollisionType();
-                let collisionResponses = physicsComponent.getCollisionResponses();
-                let collisionResponses_other = physicsComponent_other.getCollisionResponses();
+                let collisionType = collisionComponent.getCollisionType();
+                let collisionType_other = collisionComponent_other.getCollisionType();
+                let collisionResponses = collisionComponent.getCollisionResponses();
+                let collisionResponses_other = collisionComponent_other.getCollisionResponses();
 
                 let collisionResponsesResult1 = collisionType & collisionResponses_other;
                 let collisionResponsesResult2 = collisionType_other & collisionResponses;
@@ -32,11 +33,11 @@ export class Physics {
                 // console.log("collisionResponses", collisionResponses, collisionResponses_other);
                 // console.log("isDoHitTest", isDoHitTest);
 
-                physicsComponent.clearIsCollided();
-                physicsComponent_other.clearIsCollided();
+                collisionComponent.clearIsCollided();
+                collisionComponent_other.clearIsCollided();
 
                 if (isDoHitTest) {
-                    let isCollided = this.checkBoxCollision(physicsComponent, physicsComponent_other);
+                    let isCollided = this.checkBoxCollision(collisionComponent, collisionComponent_other);
                     if (isCollided) {
 
                         // ridigbody
@@ -45,8 +46,8 @@ export class Physics {
                         }
 
                         // console.log("Collided!!", actor, otherActor);
-                        physicsComponent.notifyCollision(otherActor);
-                        physicsComponent_other.notifyCollision(actor);
+                        collisionComponent.notifyCollision(otherActor);
+                        collisionComponent_other.notifyCollision(actor);
                     }
                 }
             }
@@ -54,12 +55,12 @@ export class Physics {
 
         // let actorsByChannel = [];
         // for (const actor in inActors) {
-        //     let physicsComponent = actor.getComponentByType(ComponentsModule.Type_Physics);
-        //     if (undefined === physicsComponent) {
+        //     let collisionComponent = actor.getComponentByType(ComponentsModule.Type_Physics);
+        //     if (undefined === collisionComponent) {
         //         continue;
         //     }
         //
-        //     let collitionType = physicsComponent.getCollisionType();
+        //     let collitionType = collisionComponent.getCollisionType();
         //     if (Channel_None === collitionType) {
         //         continue;
         //     }

@@ -1,3 +1,4 @@
+import { Rect } from "./common.js";
 import * as ComponentModule from "./components.js"
 import * as PhysicsModule from "./physics.js"
 
@@ -5,36 +6,48 @@ import * as PhysicsModule from "./physics.js"
 export class ActorBase {
     position;
     pivot;
-    components;
+    components : Map<ComponentModule.ComponentType, ComponentModule.ComponentBase>;
 
     constructor() {
         this.position = { x: 0, y: 0 };
         this.pivot = { x: 0.5, y: 1.0 }; // pivot: lefttop(0,0), rightbottom(1,1)
-        this.components = {};
+        this.components = new Map<ComponentModule.ComponentType, ComponentModule.ComponentBase>();
     }
 
     addComponent(inComponent) {
-        this.components[inComponent.getType()] = inComponent;
+        this.components.set(inComponent.getType(), inComponent);
+        // this.components[inComponent.getType()] = inComponent;
     }
 
     getComponentByType(inComponentType) {
-        if (this.components.hasOwnProperty(inComponentType)) {
-            return this.components[inComponentType];
+        if (this.components.has(inComponentType)) {
+            return this.components.get(inComponentType);
         }
+        // if (this.components.hasOwnProperty(inComponentType)) {
+        //     return this.components[inComponentType];
+        // }
 
         return null;
     }
 
     updateComponents(inFramework) {
-        for (let component in this.components) {
-            this.components[component].update(inFramework);
+        for (const [key, values] of this.components) {
+            values.update(inFramework);
+            // console.log(`KEY: ${key}, VALUE: ${values}`);
         }
+        // for (let component in this.components) {
+        //     this.components[component].update(inFramework);
+        // }
     }
 
     renderComponents(inFramework) {
-        for (const component in this.components) {
-            this.components[component].render(inFramework);
+        for (const [key, values] of this.components) {
+            values.render(inFramework);
+            // console.log(`KEY: ${key}, VALUE: ${values}`);
         }
+        // for (const component in this.components) {
+        //     this.components[component].render(inFramework);
+        // }
     }
 
     getPosition() {
@@ -55,11 +68,12 @@ export class ActorBase {
         this.pivot.y = y;
     }
 
-    getWorldRect(inSize) {
+    getWorldRect(inSize) : Rect {
         let x1 = this.position.x - (inSize.x * this.pivot.x);
         let y1 = this.position.y - (inSize.y * this.pivot.y);
 
-        let rect = { x: x1, y: y1, w: inSize.x, h: inSize.y, x2: x1 + inSize.x, y2: y1 + inSize.y };
+        let rect : Rect = new Rect(x1, y1, inSize.x, inSize.y);
+        // let rect = { x: x1, y: y1, w: inSize.x, h: inSize.y, x2: x1 + inSize.x, y2: y1 + inSize.y };
 
         return rect;
     }
@@ -98,6 +112,25 @@ export class BlockActor extends ActorBase {
         super();
 
         let shapeComponent = new ComponentModule.ShapeComponent(this);
+        shapeComponent.setSize(50, 50);
+        // shapeComponent.setColor("red");
+        this.addComponent(shapeComponent);
+
+        // this.addComponent(new ComponentModule.ShapeComponent(this));
+
+        let collisionComponent = new ComponentModule.CollisionComponent(this);
+        collisionComponent.setCollisionType(PhysicsModule.Channel_Static);
+        collisionComponent.setCollisionResponses(PhysicsModule.Channel_Movable);
+        collisionComponent.setSize(50, 50);
+        this.addComponent(collisionComponent);
+    }
+}
+
+export class LineActor extends ActorBase {
+    constructor() {
+        super();
+
+        let shapeComponent = new ComponentModule.LineComponent(this);
         shapeComponent.setSize(50, 50);
         // shapeComponent.setColor("red");
         this.addComponent(shapeComponent);

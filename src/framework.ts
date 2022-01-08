@@ -3,21 +3,25 @@ import * as ActorModule from "./actors.js"
 import * as ComponentModule from "./components.js"
 import * as PhysicsModule from "./physics.js"
 
-export class Framework {
-    canvas : any;
-    canvasContext : any;
+// http://127.0.0.1:5500/dist/index.html
+// 오류 : cannot be loaded because running scripts is disabled on this system.
+// 해결 : PowerShell에 다은 명령 입력 : Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
 
-    keys : Array<Boolean>;
-    fps = 10;
-    deltaTime = 1 / this.fps;
+export class Framework {
+    canvas: any;
+    canvasContext: any;
+
+    keys: Array<Boolean>;
+    fps: number = 10;
+    deltaTime: number = 1 / this.fps;
 
     // this.gravity = 9.8;
-    gravity = .8;
-    actors = [];
+    gravity: number = .8;
+    actors: Array<ActorModule.ActorBase> = [];
 
     playerActor = null;
 
-    physics : PhysicsModule.Physics;
+    physics: PhysicsModule.Physics;
 
     constructor() {
 
@@ -68,11 +72,11 @@ export class Framework {
         }, 1000 / this.fps);
     }
 
-    addActor(inActor){
+    addActor(inActor) {
         this.actors.push(inActor);
     }
 
-    setPlayerActor(inActor){
+    setPlayerActor(inActor) {
         this.playerActor = inActor;
     }
 
@@ -80,7 +84,7 @@ export class Framework {
         return this.keys[inKey.charCodeAt(0)];
     }
 
-    getCanvasContext() {
+    getCanvasContext(): CanvasRenderingContext2D {
         return this.canvasContext;
     }
 
@@ -93,9 +97,11 @@ export class Framework {
     }
 
     updateInput() {
-        let moveComponent = this.playerActor.getComponentByType(ComponentModule.Type_Move);
-        if (null !== moveComponent) {
-            moveComponent.updateSpeedByDirection(this);
+        if (this.playerActor) {
+            let moveComponent = this.playerActor.getComponentByType(ComponentModule.ComponentType.Move);
+            if (null !== moveComponent) {
+                moveComponent.updateSpeedByDirection(this);
+            }
         }
     }
 

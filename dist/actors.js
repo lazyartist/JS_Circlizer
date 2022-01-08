@@ -1,4 +1,4 @@
-import { Rect, Vector2D } from "./common.js";
+import { Rect, Vector2 } from "./common.js";
 import { CollisionComponent } from "./components/CollisionComponent.js";
 import { MoveComponent } from "./components/MoveComponent.js";
 import * as ShapeComponentModule from "./components/ShapeComponent.js";
@@ -6,8 +6,8 @@ import * as PhysicsModule from "./physics.js";
 // Actor
 export class ActorBase {
     constructor() {
-        this.position = new Vector2D(0, 0);
-        this.pivot = new Vector2D(0.5, 1.0); // { x: 0.5, y: 1.0 }; // pivot: lefttop(0,0), rightbottom(1,1)
+        this.position = new Vector2(0, 0);
+        this.pivot = new Vector2(0.5, 1.0); // { x: 0.5, y: 1.0 }; // pivot: lefttop(0,0), rightbottom(1,1)
         this.components = new Map();
     }
     addComponent(inComponent) {

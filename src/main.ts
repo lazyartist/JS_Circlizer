@@ -1,5 +1,6 @@
-import {Framework} from "./framework.js";
+import { Framework } from "./framework.js";
 import * as ActorModule from "./actors.js";
+import { Matrix2, Vector2 } from "./common.js";
 
 // alert("ho");
 
@@ -51,4 +52,23 @@ framework.addActor(lineActor7);
 
 framework.setPlayerActor(lineActor);
 // framework.setPlayerActor(playerActor);
-framework.start();
+
+// framework.start();
+
+
+
+
+// test
+let position: Vector2 = new Vector2(200, 200);
+let point: Vector2 = new Vector2(0, 100);
+for (let index = 0; index < 360; index += 10) {
+    let r: Matrix2 = Matrix2.createRotation_by_degree(index);
+    let v = r.Multiply_With_Vector2D(point);
+    console.dir(v);
+
+    framework.canvasContext.fillStyle = "red";
+    framework.canvasContext.strokeStyle = "red";
+    framework.canvasContext.beginPath();
+    framework.canvasContext.arc(position.x + v.x, position.y + v.y, 1, 0, 2 * Math.PI);
+    framework.canvasContext.stroke();
+}

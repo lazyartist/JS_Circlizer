@@ -1,4 +1,4 @@
-import { Vector2D } from "./common.js";
+import { Vector2 } from "./common.js";
 import * as ComponentsModule from "./components/ComponentBase.js";
 export const Channel_None = 0;
 export const Channel_Static = 1;
@@ -111,7 +111,7 @@ export class Physics {
 export class CollisionResult {
     constructor(isCollided, x, y) {
         this._isCollided = isCollided;
-        this._position = new Vector2D(x, y);
+        this._position = new Vector2(x, y);
     }
     get isCollided() {
         return this._isCollided;

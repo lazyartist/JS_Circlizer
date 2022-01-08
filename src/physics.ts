@@ -1,5 +1,5 @@
 import { ActorBase } from "./actors.js";
-import { Rect, Vector2D } from "./common.js";
+import { Rect, Vector2 } from "./common.js";
 import { CollisionComponent } from "./components/CollisionComponent.js";
 import * as ComponentsModule from "./components/ComponentBase.js"
 
@@ -111,8 +111,8 @@ export class Physics {
         let t: number = ((rect_r.y1 - rect_r.y2) * (rect_l.x1 - rect_r.x1) + (rect_r.x2 - rect_r.x1) * (rect_l.y1 - rect_r.y1)) / denominator;
         let s: number = ((rect_l.y1 - rect_l.y2) * (rect_l.x1 - rect_r.x1) + (rect_l.x2 - rect_l.x1) * (rect_l.y1 - rect_r.y1)) / denominator;
 
-        let v: Vector2D = rect_l.getVector2D();
-        let w: Vector2D = rect_r.getVector2D();
+        let v: Vector2 = rect_l.getVector2D();
+        let w: Vector2 = rect_r.getVector2D();
 
         // float x = v.x * t + p1.x;
         // float y = v.y * t + p1.y;
@@ -153,16 +153,16 @@ export class CollisionResult {
         this._isCollided = value;
     }
 
-    private _position: Vector2D;
-    public get position(): Vector2D {
+    private _position: Vector2;
+    public get position(): Vector2 {
         return this._position;
     }
-    public set position(value: Vector2D) {
+    public set position(value: Vector2) {
         this._position = value;
     }
 
     constructor(isCollided, x, y) {
         this._isCollided = isCollided;
-        this._position = new Vector2D(x, y);
+        this._position = new Vector2(x, y);
     }
 }

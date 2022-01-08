@@ -1,4 +1,4 @@
-export class Vector2D {
+export class Vector2 {
     _x;
     _y;
 
@@ -29,10 +29,10 @@ export class Vector2D {
     }
 }
 
-export class Size extends Vector2D {
+export class Size extends Vector2 {
 }
 
-export class Pivot extends Vector2D {
+export class Pivot extends Vector2 {
 }
 
 export class Rect {
@@ -81,6 +81,41 @@ export class Rect {
     }
 
     getVector2D(){
-        return new Vector2D(this._w, this._h);
+        return new Vector2(this._w, this._h);
+    }
+}
+
+export class Matrix2 {
+    _m00 : number;
+    _m01 : number;
+    _m10 : number;
+    _m11 : number;
+
+    constructor(m00 : number, m01 : number, m10 : number, m11 : number) {
+        this._m00 = m00;
+        this._m01 = m01;
+        this._m10 = m10;
+        this._m11 = m11;
+    }
+
+    static createRotation_by_radian(radian : number)
+    {
+        return new Matrix2(Math.cos(radian), -Math.sin(radian), Math.sin(radian), Math.cos(radian));
+    }
+
+    static createRotation_by_degree(degree : number) : Matrix2
+    {
+        return Matrix2.createRotation_by_radian(degree * Math.PI / 180);
+    }
+
+    Multiply_With_Vector2D(vector2d : Vector2) : Vector2
+    {
+        return new Vector2(this._m00 * vector2d.x + this._m01 * vector2d.y, this._m10 * vector2d.x + this._m11 * vector2d.y);
+        // return new Matrix2(this._m00 * vector2d.x, this._m01 * vector2d.y, this._m10 * vector2d.x, this._m11 * vector2d.y);
+    }
+
+    public toString() : string
+    {
+        return `${this._m00}, ${this._m01}, ${this._m10}, ${this._m11}`;
     }
 }

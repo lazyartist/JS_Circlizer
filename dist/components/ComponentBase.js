@@ -44,13 +44,13 @@ export class MoveComponent extends ComponentBase {
     constructor(inActor) {
         super(inActor);
         this.type = ComponentType.Move;
-        this.speedMax = new CommonModule.Vector2D(6, 50);
-        this.speed = new CommonModule.Vector2D(0, 0);
+        this.speedMax = new CommonModule.Vector2(6, 50);
+        this.speed = new CommonModule.Vector2(0, 0);
         // this.size = new CommonModule.Size();
-        this.friction = new CommonModule.Vector2D(-70, 0);
-        this.accel = new CommonModule.Vector2D(0, 0);
-        this.accelMax = new CommonModule.Vector2D(90, 0);
-        this.jumpSpeed = new CommonModule.Vector2D(0, 50);
+        this.friction = new CommonModule.Vector2(-70, 0);
+        this.accel = new CommonModule.Vector2(0, 0);
+        this.accelMax = new CommonModule.Vector2(90, 0);
+        this.jumpSpeed = new CommonModule.Vector2(0, 50);
     }
     update(inFramework) {
         // Component.prototype.update.call(this);

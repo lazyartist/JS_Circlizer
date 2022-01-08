@@ -1,4 +1,4 @@
-export class Vector2D {
+export class Vector2 {
     constructor(x, y) {
         this._x = x;
         this._y = y;
@@ -20,9 +20,9 @@ export class Vector2D {
         this.y = y;
     }
 }
-export class Size extends Vector2D {
+export class Size extends Vector2 {
 }
-export class Pivot extends Vector2D {
+export class Pivot extends Vector2 {
 }
 export class Rect {
     constructor(x1, y1, w, h) {
@@ -55,7 +55,28 @@ export class Rect {
         this._y2 = y1 + h;
     }
     getVector2D() {
-        return new Vector2D(this._w, this._h);
+        return new Vector2(this._w, this._h);
+    }
+}
+export class Matrix2 {
+    constructor(m00, m01, m10, m11) {
+        this._m00 = m00;
+        this._m01 = m01;
+        this._m10 = m10;
+        this._m11 = m11;
+    }
+    static createRotation_by_radian(radian) {
+        return new Matrix2(Math.cos(radian), -Math.sin(radian), Math.sin(radian), Math.cos(radian));
+    }
+    static createRotation_by_degree(degree) {
+        return Matrix2.createRotation_by_radian(degree * Math.PI / 180);
+    }
+    Multiply_With_Vector2D(vector2d) {
+        return new Vector2(this._m00 * vector2d.x + this._m01 * vector2d.y, this._m10 * vector2d.x + this._m11 * vector2d.y);
+        // return new Matrix2(this._m00 * vector2d.x, this._m01 * vector2d.y, this._m10 * vector2d.x, this._m11 * vector2d.y);
+    }
+    toString() {
+        return `${this._m00}, ${this._m01}, ${this._m10}, ${this._m11}`;
     }
 }
 //# sourceMappingURL=common.js.map

@@ -1,6 +1,6 @@
 // import {CollisionSystem} from "./collision.js"
 import * as ActorModule from "./actors.js"
-import { Vector2D } from "./common.js";
+import { Vector2 } from "./common.js";
 import * as ComponentModule from "./components/ComponentBase.js"
 import * as PhysicsModule from "./physics.js"
 
@@ -123,7 +123,7 @@ export class Framework {
 
         // player 표시
         if (this.playerActor) {
-            let position : Vector2D = this.playerActor.getPosition();
+            let position : Vector2 = this.playerActor.getPosition();
 
             this.canvasContext.fillStyle = "red";
             this.canvasContext.strokeStyle = "red";

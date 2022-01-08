@@ -27,7 +27,7 @@ export class ShapeComponentBase extends ComponentBase {
     }
 
     render(inFramework : Framework) {
-        let position : CommonModule.Vector2D = this.getActor().getPosition();
+        let position : CommonModule.Vector2 = this.getActor().getPosition();
         let rect : CommonModule.Rect = this.getActor().getWorldRect(this.size);
         // let position = this.getActor().getPosition();
         let canvasContext : CanvasRenderingContext2D = inFramework.getCanvasContext();
@@ -103,7 +103,7 @@ export class LineShapeComponent extends ShapeComponentBase {
     }
 
     getWorldRect() : CommonModule.Rect {
-        let position : CommonModule.Vector2D = this.getActor().getPosition();
+        let position : CommonModule.Vector2 = this.getActor().getPosition();
         let rect : CommonModule.Rect = new CommonModule.Rect(position.x, position.y, this.size.x, this.size.y);
 
         return rect;

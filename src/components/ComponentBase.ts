@@ -53,25 +53,25 @@ export class ComponentBase {
 
 // MoveComponent
 export class MoveComponent extends ComponentBase {
-    speedMax : CommonModule.Vector2D;
-    speed : CommonModule.Vector2D;
-    friction : CommonModule.Vector2D;
-    accel : CommonModule.Vector2D;
-    accelMax : CommonModule.Vector2D;
-    jumpSpeed : CommonModule.Vector2D;
+    speedMax : CommonModule.Vector2;
+    speed : CommonModule.Vector2;
+    friction : CommonModule.Vector2;
+    accel : CommonModule.Vector2;
+    accelMax : CommonModule.Vector2;
+    jumpSpeed : CommonModule.Vector2;
 
     constructor(inActor) {
 
         super(inActor);
         this.type = ComponentType.Move;
 
-        this.speedMax = new CommonModule.Vector2D( 6, 50 );
-        this.speed = new CommonModule.Vector2D( 0, 0 );
+        this.speedMax = new CommonModule.Vector2( 6, 50 );
+        this.speed = new CommonModule.Vector2( 0, 0 );
         // this.size = new CommonModule.Size();
-        this.friction = new CommonModule.Vector2D( -70, 0 );
-        this.accel = new CommonModule.Vector2D( 0, 0 );
-        this.accelMax = new CommonModule.Vector2D( 90, 0 );
-        this.jumpSpeed = new CommonModule.Vector2D( 0, 50 );
+        this.friction = new CommonModule.Vector2( -70, 0 );
+        this.accel = new CommonModule.Vector2( 0, 0 );
+        this.accelMax = new CommonModule.Vector2( 90, 0 );
+        this.jumpSpeed = new CommonModule.Vector2( 0, 50 );
     }
 
     update(inFramework) {

@@ -1,6 +1,7 @@
 // import {CollisionSystem} from "./collision.js"
 import * as ActorModule from "./actors.js"
-import * as ComponentModule from "./components.js"
+import { Vector2D } from "./common.js";
+import * as ComponentModule from "./components/ComponentBase.js"
 import * as PhysicsModule from "./physics.js"
 
 // http://127.0.0.1:5500/dist/index.html
@@ -12,14 +13,14 @@ export class Framework {
     canvasContext: any;
 
     keys: Array<Boolean>;
-    fps: number = 10;
+    fps: number = 20;
     deltaTime: number = 1 / this.fps;
 
-    // this.gravity = 9.8;
-    gravity: number = .8;
+    // gravity: number = 9.8;
+    gravity: number = .0;
     actors: Array<ActorModule.ActorBase> = [];
 
-    playerActor = null;
+    playerActor : ActorModule.ActorBase = null;
 
     physics: PhysicsModule.Physics;
 
@@ -98,7 +99,7 @@ export class Framework {
 
     updateInput() {
         if (this.playerActor) {
-            let moveComponent = this.playerActor.getComponentByType(ComponentModule.ComponentType.Move);
+            let moveComponent: ComponentModule.MoveComponent = this.playerActor.getComponentByType(ComponentModule.ComponentType.Move) as ComponentModule.MoveComponent;
             if (null !== moveComponent) {
                 moveComponent.updateSpeedByDirection(this);
             }
@@ -119,6 +120,17 @@ export class Framework {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.actors.forEach(actor => actor.renderComponents(this));
+
+        // player 표시
+        if (this.playerActor) {
+            let position : Vector2D = this.playerActor.getPosition();
+
+            this.canvasContext.fillStyle = "red";
+            this.canvasContext.strokeStyle = "red";
+            this.canvasContext.beginPath();
+            this.canvasContext.arc(position.x, position.y, 5, 0, 2 * Math.PI);
+            this.canvasContext.stroke();
+        }
     }
 
     gameLoop() {

@@ -79,4 +79,8 @@ export class Rect {
         this._x2 = x1 + w;
         this._y2 = y1 + h;
     }
+
+    getVector2D(){
+        return new Vector2D(this._w, this._h);
+    }
 }

@@ -1,0 +1,132 @@
+<html>
+
+<style>
+    body{background-color: black;}
+</style>
+
+<body id="body">
+    <!-- canvas는 width, height attribute를 사용하여 크기를 조절해야한다. css로 조작하면 원본을 스케일링하므로 이미지가 왜곡됨은 물론 정확한 조작이 불가능하다. -->
+    <canvas id="canvas" style="border: 1px solid red;" width="600" height="600"></canvas>
+</body>
+
+<script type="module" src=" main.js"></script>
+
+<script>
+    // 대본작성
+    // 대본 == 극의 흐름을 처음부터 끝까지 작성
+    // 인물, 연기자, 액터
+    // Character, Actor
+    // Actor == Computer or Browser
+    // => 브라우저가 대본을 읽어 행동한다.
+    // 대본을 <script> 영역에 작성하면 브라우저가 읽고 행동(연기)한다.
+    // 프로그램이 실행할 것들을 처음부터 끝까지 작성
+
+    // var framework = new Framework();
+    // framework.init();
+    // framework.start();
+
+    // var c = new CollisionSystem();
+
+    // var canvas;
+    // var ctx;
+    // var keys = [];
+    // var fps = 10;
+    // var deltaTime = 1 / fps;
+    //
+    //
+    // var gravity = 9.8;
+    // var actors = [];
+    //
+    // var position = { x: 0, y: 0 };
+    // var size = { x: 10, y: 10 };
+    // var speedPerSecond = { x: 50, y: 50 };
+    // var speed = { x: 0, y: 0 };
+
+    
+
+    // function init() {
+    //     const body = document.getElementById('body');
+    //     body.onkeydown = function (e) {
+    //         // console.log(e);
+    //         keys[e.code] = true;
+    //     }
+    //     body.onkeyup = function (e) {
+    //         // console.log(e);
+    //         keys[e.code] = false;
+    //     }
+    //
+    //     canvas = document.getElementById('canvas');
+    //     ctx = canvas.getContext('2d');
+    //
+    //     actors.push(new ActorBase());
+    //     actors.push(new CircleActor());
+    // }
+    //
+    // function isPressedKey(inKey) {
+    //     const result = keys[inKey.charCodeAt(0)];
+    //     return result;
+    // }
+    //
+    //
+    // function updateInput() {
+    //     // e.keyCode는 대소문자 구분없이 같다.
+    //     // A a:65, D d:68, W w:87, S s:83, space:32
+    //
+    //     speed.x = 0;
+    //     speed.y = 0;
+    //
+    //     if (isPressedKey("A")) {
+    //         speed.x = speedPerSecond.x * -1;
+    //     }
+    //
+    //     if (isPressedKey("D")) {
+    //         speed.x = speedPerSecond.x;
+    //     }
+    //
+    //     if (isPressedKey("W")) {
+    //         speed.y = speedPerSecond.y * -1;
+    //     }
+    //
+    //     if (isPressedKey("S")) {
+    //         speed.y = speedPerSecond.y;
+    //
+    //         // console.log(actors);
+    //         // console.log(actors[0].Move);
+    //         // console.log(actors[0].Move(2));
+    //         // console.log(actors[0]);
+    //     }
+    //
+    //     speed.x *= deltaTime;
+    //     speed.y *= deltaTime;
+    // }
+    //
+    // function update() {
+    //     // input
+    //     position.x += speed.x;
+    //     position.y += speed.y;
+    //
+    //     actors.forEach(actor => actor.updateComponents());
+    // }
+    //
+    // function render() {
+    //     // clear
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //
+    //     // draw
+    //     ctx.fillStyle = 'green';
+    //     ctx.fillRect(position.x, position.y, size.x, size.y);
+    // }
+    //
+    // function gameLoop() {
+    //     updateInput();
+    //     update();
+    //     render();
+    // }
+    //
+    // init();
+    //
+    // window.setInterval(gameLoop, 1000 / fps);
+
+</script>
+
+</html>

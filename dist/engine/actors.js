@@ -6,6 +6,7 @@ import * as PhysicsModule from "./physics.js";
 // Actor
 export class ActorBase {
     constructor() {
+        // this.transform = new Transform2(0, 0, 0, 1);
         this.position = new Vector2(0, 0);
         this.pivot = new Vector2(0.5, 1.0); // { x: 0.5, y: 1.0 }; // pivot: lefttop(0,0), rightbottom(1,1)
         this.components = new Map();
@@ -18,6 +19,9 @@ export class ActorBase {
             return this.components.get(inComponentType);
         }
         return null;
+    }
+    tick(inFramework) {
+        // override
     }
     updateComponents(inFramework) {
         for (const [key, values] of this.components) {

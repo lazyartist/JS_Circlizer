@@ -1,4 +1,4 @@
-import { Rect, Vector2 } from "./common.js";
+import { Rect, Transform2, Vector2 } from "./common.js";
 import { CollisionComponent } from "./components/CollisionComponent.js";
 import * as ComponentModule from "./components/ComponentBase.js"
 import { MoveComponent } from "./components/MoveComponent.js";
@@ -7,13 +7,20 @@ import * as PhysicsModule from "./physics.js"
 
 // Actor
 export class ActorBase {
-    // transform : Transform2;
+    private _transform: Transform2;
+    public get transform(): Transform2 {
+        return this._transform;
+    }
+    public set transform(value: Transform2) {
+        this._transform = value;
+    }
+    
     position : Vector2;
     pivot : Vector2;
     components : Map<ComponentModule.ComponentType, ComponentModule.ComponentBase>;
 
     constructor() {
-        // this.transform = new Transform2(0, 0, 0, 1);
+        this.transform = new Transform2(0, 0, 0, 1);
         this.position = new Vector2(0, 0);
         this.pivot = new Vector2(0.5, 1.0); // { x: 0.5, y: 1.0 }; // pivot: lefttop(0,0), rightbottom(1,1)
         this.components = new Map<ComponentModule.ComponentType, ComponentModule.ComponentBase>();
@@ -47,6 +54,11 @@ export class ActorBase {
             values.render(inFramework);
             // console.log(`KEY: ${key}, VALUE: ${values}`);
         }
+
+        for (const [key, values] of this.components) {
+            values.render_post(inFramework);
+            // console.log(`KEY: ${key}, VALUE: ${values}`);
+        }
     }
 
     getPosition() : Vector2{
@@ -58,7 +70,7 @@ export class ActorBase {
         this.position.y = y;
     }
 
-    getPivot() {
+    getPivot() : Vector2{
         return this.pivot;
     }
 

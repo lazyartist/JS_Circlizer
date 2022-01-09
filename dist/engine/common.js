@@ -1,3 +1,8 @@
+export class ColorSet {
+}
+// static Pivot: string = "#ffffff";
+ColorSet.Position = "#ffffff";
+ColorSet.Possess = "#ff0000";
 export class Vector2 {
     constructor(x, y) {
         this._x = x;
@@ -93,51 +98,46 @@ export class Matrix2 {
         return `${this._m00}, ${this._m01}, ${this._m10}, ${this._m11}`;
     }
 }
-// export class Transform2 {
-//     private _position: Vector2;
-//     public get position(): Vector2 {
-//         return this._position;
-//     }
-//     public set position(value: Vector2) {
-//         this._position = value;
-//     }
-//     private _rotation: number;
-//     public get rotation(): number {
-//         return this._rotation;
-//     }
-//     public set rotation(value: number) {
-//         this._rotation = value;
-//         this.rotationMatrix.setRotation(value);
-//     }
-//     private _scale: number;
-//     public get scale(): number {
-//         return this._scale;
-//     }
-//     public set scale(value: number) {
-//         this._scale = value;
-//     }
-//     private _rotationMatrix: Matrix2;
-//     public get rotationMatrix(): Matrix2 {
-//         return this._rotationMatrix;
-//     }
-//     public set rotationMatrix(value: Matrix2) {
-//         this._rotationMatrix = value;
-//     }
-//     constructor(x?: number, y?: number, rotation?: number, scale?: number) {
-//         this.rotationMatrix = new Matrix2;
-//         this.position = new Vector2(0, 0);
-//         this.rotation = 0;
-//         this.scale = 0;
-//         if(x && y)
-//         {
-//             this.position.setXY(x, y);
-//         }
-//         if(rotation){
-//             this.rotation = rotation;
-//         }
-//         if(scale){
-//             this.scale = scale;
-//         }
-//     }
-// }
+export class Transform2 {
+    constructor(x, y, rotation, scale) {
+        this.rotationMatrix = new Matrix2;
+        this.position = new Vector2(0, 0);
+        this.rotation = 0;
+        this.scale = 0;
+        if (x && y) {
+            this.position.setXY(x, y);
+        }
+        if (rotation) {
+            this.rotation = rotation;
+        }
+        if (scale) {
+            this.scale = scale;
+        }
+    }
+    get position() {
+        return this._position;
+    }
+    set position(value) {
+        this._position = value;
+    }
+    get rotation() {
+        return this._rotation;
+    }
+    set rotation(value) {
+        this._rotation = value;
+        this.rotationMatrix.setRotation(value);
+    }
+    get scale() {
+        return this._scale;
+    }
+    set scale(value) {
+        this._scale = value;
+    }
+    get rotationMatrix() {
+        return this._rotationMatrix;
+    }
+    set rotationMatrix(value) {
+        this._rotationMatrix = value;
+    }
+}
 //# sourceMappingURL=common.js.map

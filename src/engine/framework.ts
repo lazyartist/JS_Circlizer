@@ -1,7 +1,8 @@
 // import {CollisionSystem} from "./collision.js"
 import * as ActorModule from "./actors.js"
-import { Vector2 } from "./common.js";
+import { ColorSet, Vector2 } from "./common.js";
 import * as ComponentModule from "./components/ComponentBase.js"
+import { MoveComponent } from "./components/MoveComponent.js";
 import * as PhysicsModule from "./physics.js"
 
 // http://127.0.0.1:5500/dist/index.html
@@ -99,7 +100,7 @@ export class Framework {
 
     updateInput() {
         if (this.playerActor) {
-            let moveComponent: ComponentModule.MoveComponent = this.playerActor.getComponentByType(ComponentModule.ComponentType.Move) as ComponentModule.MoveComponent;
+            let moveComponent: MoveComponent = this.playerActor.getComponentByType(ComponentModule.ComponentType.Move) as MoveComponent;
             if (null !== moveComponent) {
                 moveComponent.updateSpeedByDirection(this);
             }
@@ -129,7 +130,8 @@ export class Framework {
             let position: Vector2 = this.playerActor.getPosition();
 
             this.canvasContext.fillStyle = "red";
-            this.canvasContext.strokeStyle = "red";
+            // this.canvasContext.strokeStyle = "red";
+            this.canvasContext.strokeStyle = ColorSet.Possess;
             this.canvasContext.beginPath();
             this.canvasContext.arc(position.x, position.y, 5, 0, 2 * Math.PI);
             this.canvasContext.stroke();

@@ -1,3 +1,9 @@
+export class ColorSet {
+    // static Pivot: string = "#ffffff";
+    static Position: string = "#ffffff";
+    static Possess: string = "#ff0000";
+}
+
 export class Vector2 {
     _x;
     _y;
@@ -133,58 +139,57 @@ export class Matrix2 {
     }
 }
 
-// export class Transform2 {
-//     private _position: Vector2;
-//     public get position(): Vector2 {
-//         return this._position;
-//     }
-//     public set position(value: Vector2) {
-//         this._position = value;
-//     }
+export class Transform2 {
+    private _position: Vector2;
+    public get position(): Vector2 {
+        return this._position;
+    }
+    public set position(value: Vector2) {
+        this._position = value;
+    }
 
-//     private _rotation: number;
-//     public get rotation(): number {
-//         return this._rotation;
-//     }
-//     public set rotation(value: number) {
-//         this._rotation = value;
-//         this.rotationMatrix.setRotation(value);
-//     }
+    private _rotation: number;
+    public get rotation(): number {
+        return this._rotation;
+    }
+    public set rotation(value: number) {
+        this._rotation = value;
+        this.rotationMatrix.setRotation(value);
+    }
 
-//     private _scale: number;
-//     public get scale(): number {
-//         return this._scale;
-//     }
-//     public set scale(value: number) {
-//         this._scale = value;
-//     }
+    private _scale: number;
+    public get scale(): number {
+        return this._scale;
+    }
+    public set scale(value: number) {
+        this._scale = value;
+    }
 
-//     private _rotationMatrix: Matrix2;
-//     public get rotationMatrix(): Matrix2 {
-//         return this._rotationMatrix;
-//     }
-//     public set rotationMatrix(value: Matrix2) {
-//         this._rotationMatrix = value;
-//     }
+    private _rotationMatrix: Matrix2;
+    public get rotationMatrix(): Matrix2 {
+        return this._rotationMatrix;
+    }
+    public set rotationMatrix(value: Matrix2) {
+        this._rotationMatrix = value;
+    }
 
-//     constructor(x?: number, y?: number, rotation?: number, scale?: number) {
-//         this.rotationMatrix = new Matrix2;
+    constructor(x?: number, y?: number, rotation?: number, scale?: number) {
+        this.rotationMatrix = new Matrix2;
 
-//         this.position = new Vector2(0, 0);
-//         this.rotation = 0;
-//         this.scale = 0;
+        this.position = new Vector2(0, 0);
+        this.rotation = 0;
+        this.scale = 0;
 
-//         if(x && y)
-//         {
-//             this.position.setXY(x, y);
-//         }
+        if (x && y) {
+            this.position.setXY(x, y);
+        }
 
-//         if(rotation){
-//             this.rotation = rotation;
-//         }
+        if (rotation) {
+            this.rotation = rotation;
+        }
 
-//         if(scale){
-//             this.scale = scale;
-//         }
-//     }
-// }
+        if (scale) {
+            this.scale = scale;
+        }
+    }
+}

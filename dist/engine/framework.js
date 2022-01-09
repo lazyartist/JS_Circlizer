@@ -1,3 +1,4 @@
+import { ColorSet } from "./common.js";
 import * as ComponentModule from "./components/ComponentBase.js";
 import * as PhysicsModule from "./physics.js";
 // http://127.0.0.1:5500/dist/index.html
@@ -92,7 +93,8 @@ export class Framework {
         if (this.playerActor) {
             let position = this.playerActor.getPosition();
             this.canvasContext.fillStyle = "red";
-            this.canvasContext.strokeStyle = "red";
+            // this.canvasContext.strokeStyle = "red";
+            this.canvasContext.strokeStyle = ColorSet.Possess;
             this.canvasContext.beginPath();
             this.canvasContext.arc(position.x, position.y, 5, 0, 2 * Math.PI);
             this.canvasContext.stroke();

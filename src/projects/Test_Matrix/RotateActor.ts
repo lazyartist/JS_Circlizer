@@ -1,7 +1,7 @@
 import { ActorBase } from "../../engine/actors.js";
 import { CollisionComponent } from "../../engine/components/CollisionComponent.js";
 import { MoveComponent } from "../../engine/components/MoveComponent.js";
-import { BoxShapeComponent } from "../../engine/components/ShapeComponent.js";
+import { BoxShapeComponent, MeshShapeComponent } from "../../engine/components/ShapeComponent.js";
 import * as PhysicsModule from "../../engine/physics.js";
 
 export class RotateActor extends ActorBase
@@ -15,7 +15,7 @@ export class RotateActor extends ActorBase
         let moveComponent = new MoveComponent(this);
         this.addComponent(moveComponent);
 
-        let shapeComponent = new BoxShapeComponent(this);
+        let shapeComponent = new MeshShapeComponent(this);
         shapeComponent.setSize(50, 50);
         this.addComponent(shapeComponent);
 
@@ -27,7 +27,7 @@ export class RotateActor extends ActorBase
     }
 
     tick(inFramework) {
-        this.transform.rotation += 0.1;
+        this.transform.rotation += 0.01;
         // console.log(this);
     }
 }

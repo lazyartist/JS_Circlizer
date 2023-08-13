@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/lazyartist/JS_Circlizer/issues"
   },
-  "homepage": "https://github.com/lazyartist/JS_Circlizer#readme"
+  "homepage": "https://github.com/lazyartist/JS_Circlizer#readme",
+  "dependencies": {
+    "typescript": "^5.1.6"
+  }
 }
